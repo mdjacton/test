@@ -1,0 +1,48 @@
+Hi Guys.
+
+Place folder once extracted from zip in your webroot directory mine was for example /var/www/.
+
+change directory to "webroot"/test/app
+change permissions on the tmp/ dir
+
+sudo chmod -R 777 tmp
+
+change dir to webroot/test
+
+this is where you will find rims.sql, a dump of the database.
+
+create a database in mysql called rims.
+
+I used the following to import the database
+class DATABASE_CONFIG {
+
+mysql -u"username" -p rims < rims.sql
+
+you will need to change the PASSWORD in "webroot"/test/app/Config/datbase.php
+
+class DATABASE_CONFIG {
+
+	public $default = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'localhost',
+		'login' => 'root',
+		'password' => 'YOUR PASSWORD HERE',
+		'database' => 'rims',
+		'prefix' => '',
+		//'encoding' => 'utf8',
+	);
+
+Then you should be able to browse to localhost/test/users/login
+
+Administrastor name = Martin
+Password            = magic10
+
+I left out the email section, as I was not able to set it up on my machine which made testing it a little difficult, and I left out the KM's as they seemed to warrant more time than I felt I had available, but to give you some idea as to what I would like to have done with it : 
+
+add start and end km readings to the bookings table that would update the car table. A report on who used what km's for each vehicle.
+
+Please let me know if I can be of further help
+
+Kind Regards
+Martin
