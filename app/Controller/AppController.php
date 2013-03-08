@@ -38,25 +38,24 @@ class AppController extends Controller {
     public $components = array(
         'Acl',
         'Auth' => array(
-            'authorize' => array(
-                'Actions' => array('actionPath' => 'controllers')
-            )
+            'loginRedirect' => array('controller' => 'bookings', 'action' => 'index'),
+            'logoutRedirect' => array('controller' => 'users', 'action' => 'login')
         ),
         'Session'
     );
     public $helpers = array('Html', 'Form', 'Session');
 
     public function beforeFilter() {
+        $this->Auth->allow('login','logout');
         //Configure AuthComponent
-        $this->Auth->allow('display');
-        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->loginRedirect = array('controller' => 'bookings', 'action' => 'index');
+//        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+//        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
+//        $this->Auth->loginRedirect = array('controller' => 'bookings', 'action' => 'index');
     }
     
     public function isAuthorized($user) {
     // Admin can access every action
-    if (isset($user['group']) && $user['group'] === 'administration') {
+    if (isset($user['group']) && $user['group'] === 'Administrator') {
         return true;
     }
 

@@ -6,11 +6,11 @@ App::uses('AppController', 'Controller');
  * @property User $User
  */
 class UsersController extends AppController {
-        public function beforeFilter() {
-            parent::beforeFilter();
-            $this->Auth->allow('login','logout');
-        }
-        
+//        public function beforeFilter() {
+//            parent::beforeFilter();
+//            $this->Auth->allow();
+//        }
+//        
 //  public function initDB() {
 //    $group = $this->User->Group;
 //    //Allow admins to everything
@@ -26,14 +26,18 @@ class UsersController extends AppController {
             if ($this->Session->read('Auth.User')) {
                 $this->Session->setFlash('You are logged in!');
                 $this->redirect('/', null, false);
+                //echo 'hi';exit;
             }
             if ($this->request->is('post')) {
+                                //echo 'hi';exit;
+
                 if ($this->Auth->login()) {
                     $this->redirect($this->Auth->redirect());
                 } else {
                     $this->Session->setFlash('Your username or password was incorrect.');
                 }
-            }
+            }                //echo 'hi';exit;
+
         }
 
         public function logout() {

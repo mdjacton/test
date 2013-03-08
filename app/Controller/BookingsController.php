@@ -2,6 +2,7 @@
 
 App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
+
 /**
  * Bookings Controller
  *
@@ -10,20 +11,21 @@ App::uses('CakeEmail', 'Network/Email');
 class BookingsController extends AppController {
 
     public function isAuthorized($user) {
-    if ($this->action === 'add') {
-        return true;
-    }
-
-    // The owner of a post can edit and delete it
-    if (in_array($this->action, array('edit', 'delete'))) {
-        $postId = $this->request->params['pass'][0];
-        if ($this->Booking->isOwnedBy($postId, $user['id'])) {
+        if ($this->action === 'add') {
             return true;
         }
+
+        // The owner of a post can edit and delete it
+        if (in_array($this->action, array('edit', 'delete'))) {
+            $postId = $this->request->params['pass'][0];
+            if ($this->Booking->isOwnedBy($postId, $user['id'])) {
+                return true;
+            }
+        }
+
+        return parent::isAuthorized($user);
     }
 
-    return parent::isAuthorized($user);
-}
     /**
      * index method
      *
@@ -31,11 +33,10 @@ class BookingsController extends AppController {
      */
     public function index() {
         $this->Booking->recursive = 0;
-        $bookingDates = $this->Booking->find('all');//, array(
-        foreach($bookingDates as $bDate )
-        {
-                $bDate['Booking']['booking_date'] = date('Y m d', strtotime($bDate['Booking']['booking_date']));
-                $newArr[$bDate['Booking']['booking_date']] = $bDate;
+        $bookingDates = $this->Booking->find('all'); //, array(
+        foreach ($bookingDates as $bDate) {
+            $bDate['Booking']['booking_date'] = date('Y m d', strtotime($bDate['Booking']['booking_date']));
+            $newArr[$bDate['Booking']['booking_date']] = $bDate;
         }
         $this->set('user_id', $this->Auth->user('id'));
         $this->set('group_id', $this->Auth->user('group_id'));
@@ -70,10 +71,10 @@ class BookingsController extends AppController {
         if ($this->request->is('post')) {
 //            $month = 'April';
 //            echo date('m', strtotime($month));exit;
-            $this->request->data['Booking']['booking_date']['day'] = $this->params['pass'][1] ;
-            $this->request->data['Booking']['booking_date']['month'] = date('m', strtotime($this->params['pass'][2])) ;
-            $this->request->data['Booking']['booking_date']['year'] = $this->params['pass'][3] ;
-            $this->request->data['Booking']['user_id'] = $this->params['pass'][0] ;
+            $this->request->data['Booking']['booking_date']['day'] = $this->params['pass'][1];
+            $this->request->data['Booking']['booking_date']['month'] = date('m', strtotime($this->params['pass'][2]));
+            $this->request->data['Booking']['booking_date']['year'] = $this->params['pass'][3];
+            $this->request->data['Booking']['user_id'] = $this->params['pass'][0];
 //            echo "<pre>" ; print_r($this->request->data); echo "</pre>";exit;
             $this->Booking->create();
             if ($this->Booking->save($this->request->data)) {
@@ -83,13 +84,13 @@ class BookingsController extends AppController {
                 $this->Session->setFlash(__('The booking could not be saved. Please, try again.'));
             }
         }
-        $test_date = getdate(); 
-        $test_date['mday'] = $this->params['pass'][1] ;
+        $test_date = getdate();
+        $test_date['mday'] = $this->params['pass'][1];
         //echo "<pre>" ; print_r($test_date); echo "</pre>";exit;
         //$users = $this->Booking->User->find('list');
         $id_and_date = $this->params['pass'];
         $cars = $this->Booking->Car->find('list');
-        $this->set(compact('cars','id_and_date','test_date'));
+        $this->set(compact('cars', 'id_and_date', 'test_date'));
     }
 
     /**
