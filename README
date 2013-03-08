@@ -1,11 +1,16 @@
 Hi Guys.
 
-Place folder once extracted from zip in your webroot directory mine was for example /var/www/.
+Go to your webroot dir, for example /var/www/ and type
+
+$ git clone https://github.com/mdjacton/test.git
 
 change directory to "webroot"/test/app
+
+$ mkdir tmp
+
 change permissions on the tmp/ dir
 
-sudo chmod -R 777 tmp
+$ sudo chmod -R 777 tmp
 
 change dir to webroot/test
 
@@ -14,9 +19,8 @@ this is where you will find rims.sql, a dump of the database.
 create a database in mysql called rims.
 
 I used the following to import the database
-class DATABASE_CONFIG {
 
-mysql -u"username" -p rims < rims.sql
+$ mysql -u"username" -p rims < rims.sql
 
 you will need to change the PASSWORD in "webroot"/test/app/Config/datbase.php
 
